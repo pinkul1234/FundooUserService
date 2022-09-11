@@ -69,5 +69,8 @@ public class UserController {
         Response response = userService.restore(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+    @GetMapping("/validate/{token}")
+    public Boolean validate(@PathVariable String token){
+        return userService.validate(token);
+    }
 }

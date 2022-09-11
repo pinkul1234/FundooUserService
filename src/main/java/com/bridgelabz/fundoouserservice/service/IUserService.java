@@ -29,4 +29,6 @@ public interface IUserService {
     Response deletePermanently(long id, String token);
 
     Response restore(long id, String token);
+
+    Boolean validate(String token);
 }

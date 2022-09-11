@@ -134,6 +134,7 @@ public class UserService implements IUserService {
         if (isUser.isPresent()){
             Optional<UserModel> isId = userRepository.findById(id);
             if (isId.isPresent()){
+                userRepository.delete(isId.get());
                 return new Response("success", 200, isId.get());
             }
             throw new UserNotFoundException(400, "Not found");
@@ -155,5 +156,14 @@ public class UserService implements IUserService {
             throw new UserNotFoundException(400, "Not found");
         }
         throw new UserNotFoundException(400, "Token is wrong");
+    }
+    @Override
+    public Boolean validate(String token){
+        Long userId = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUser = userRepository.findById(userId);
+        if (isUser.isPresent()){
+            return true;
+        }
+        return false;
     }
 }
