@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,6 +52,21 @@ public class UserController {
     @PutMapping("/resetpassword")
     public ResponseEntity<Response> resetPassword(@RequestParam String emailId){
         Response response = userService.resetPassword(emailId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @DeleteMapping("/deleteusers")
+    public ResponseEntity<Response> deleteUsers(@PathVariable long id, @RequestHeader String token) {
+        Response response = userService.deleteUsers(id, token);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @DeleteMapping("/deletepermanently")
+    public ResponseEntity<Response> deletePermanently(@PathVariable long id, @RequestHeader String token) {
+        Response response = userService.deletePermanently(id, token);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @PutMapping("/restore")
+    public ResponseEntity<Response> restore(@PathVariable long id, @RequestHeader String token) {
+        Response response = userService.restore(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -23,4 +23,10 @@ public interface IUserService {
     Response resetPassword(String emailId);
 
     Response deleteUser(long id, String token);
+
+    Response deleteUsers(long id, String token);
+
+    Response deletePermanently(long id, String token);
+
+    Response restore(long id, String token);
 }

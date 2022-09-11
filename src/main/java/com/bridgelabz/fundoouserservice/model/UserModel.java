@@ -21,9 +21,8 @@ public class UserModel {
     private String password;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    private boolean isActive;
-    @Column(name = "deleted")
-    private boolean isDeleted;
+    private boolean active;
+    private boolean deleted;
     private Date dateOfBirth;
 
     public UserModel(UserDto userDto){
@@ -34,8 +33,6 @@ public class UserModel {
         this.password = userDto.getPassword();
 //        this.createdDate = userDto.getCreatedDate();
 //        this.updatedDate = userDto.getUpdatedDate();
-        this.isActive = userDto.isActive();
-        this.isDeleted = userDto.isDeleted();
         this.dateOfBirth = userDto.getDateOfBirth();
     }
 
