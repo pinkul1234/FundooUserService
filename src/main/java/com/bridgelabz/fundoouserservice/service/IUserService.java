@@ -12,7 +12,7 @@ public interface IUserService {
     Response addUser(UserDto userDto);
 
 
-    Response updateUser(long id, String token, UserDto userDto);
+    Response updateUser(long userId, String token, UserDto userDto);
 
     List<UserModel> getUserData(String token);
 
@@ -22,13 +22,13 @@ public interface IUserService {
 
     Response resetPassword(String emailId);
 
-    Response deleteUser(long id, String token);
+    Response deleteUser(long userId, String token);
 
-    Response deleteUsers(long id, String token);
+    Response deleteUsers(long userId, String token);
 
-    Response deletePermanently(long id, String token);
+    Response deletePermanently(long userId, String token);
 
-    Response restore(long id, String token);
+    Response restore(long userId, String token);
 
     Boolean validate(String token);
 }

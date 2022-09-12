@@ -10,6 +10,7 @@ import com.bridgelabz.fundoouserservice.util.TokenUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +34,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response updateUser(long id, String token, UserDto userDto) {
-        Long userId = tokenUtil.decodeToken(token);
-        Optional<UserModel> isUserPresent = userRepository.findById(userId);
+    public Response updateUser(long userId, String token, UserDto userDto) {
+        Long userIdToken = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()) {
             isUserPresent.get().setFullName(userDto.getFullName());
             isUserPresent.get().setMobile(userDto.getMobile());
@@ -43,6 +44,10 @@ public class UserService implements IUserService {
             isUserPresent.get().setProfilePic(userDto.getProfilePic());
             isUserPresent.get().setPassword(userDto.getPassword());
             isUserPresent.get().setDateOfBirth(userDto.getDateOfBirth());
+            isUserPresent.get().setUpdatedDate(LocalDateTime.now());
+            String body = "Users details updated with id is: " +isUserPresent.get().getId();
+            String subject = "Users details updated successfully";
+            mailService.send(isUserPresent.get().getEmailId(), body, subject);
             userRepository.save(isUserPresent.get());
             return new Response("Success", 200, isUserPresent.get());
         }
@@ -59,9 +64,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response deleteUser(long id, String token) {
-        Long userId = tokenUtil.decodeToken(token);
-        Optional<UserModel> isUserPresent = userRepository.findById(userId);
+    public Response deleteUser(long userId, String token) {
+        Long userIdToken = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()) {
             userRepository.save(isUserPresent.get());
             String body = "User deleted: " + isUserPresent.get().getId();
@@ -112,46 +117,46 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response deleteUsers(long id, String token) {
-        long userId = tokenUtil.decodeToken(token);
-        Optional<UserModel> isUser = userRepository.findById(userId);
-        if (isUser.isPresent()) {
-            Optional<UserModel> isId = userRepository.findById(id);
-            if (isId.isPresent()) {
-                isId.get().setActive(false);
-                isId.get().setDeleted(true);
-                userRepository.save(isId.get());
-                return new Response("success", 200, isId.get());
+    public Response deleteUsers(long userId, String token) {
+        long userIdToken = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
+        if (isUserPresent.isPresent()) {
+            Optional<UserModel> isIdPresent = userRepository.findById(userId);
+            if (isIdPresent.isPresent()) {
+                isIdPresent.get().setActive(false);
+                isIdPresent.get().setDeleted(true);
+                userRepository.save(isIdPresent.get());
+                return new Response("success", 200, isIdPresent.get());
             }
             throw new UserNotFoundException(400,"Not found");
         }
         throw new UserNotFoundException(400, "Token is wrong");
     }
     @Override
-    public Response deletePermanently(long id, String token){
-        long UserId = tokenUtil.decodeToken(token);
-        Optional<UserModel> isUser = userRepository.findById(UserId);
-        if (isUser.isPresent()){
-            Optional<UserModel> isId = userRepository.findById(id);
-            if (isId.isPresent()){
-                userRepository.delete(isId.get());
-                return new Response("success", 200, isId.get());
+    public Response deletePermanently(long userId, String token){
+        long userIdToken = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
+        if (isUserPresent.isPresent()){
+            Optional<UserModel> isIdPresent = userRepository.findById(userId);
+            if (isIdPresent.isPresent()){
+                userRepository.delete(isIdPresent.get());
+                return new Response("success", 200, isIdPresent.get());
             }
             throw new UserNotFoundException(400, "Not found");
         }
         throw new UserNotFoundException(400, "Token is wrong");
     }
     @Override
-    public Response restore(long id, String token){
-        long userId = tokenUtil.decodeToken(token);
-        Optional<UserModel> isUser = userRepository.findById(userId);
-        if (isUser.isPresent()){
-            Optional<UserModel> isId = userRepository.findById(id);
-            if (isId.isPresent()){
-                isId.get().setActive(true);
-                isId.get().setDeleted(false);
-                userRepository.save(isId.get());
-                return new Response("success", 200, isId.get());
+    public Response restore(long userId, String token){
+        long userIdToken = tokenUtil.decodeToken(token);
+        Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
+        if (isUserPresent.isPresent()){
+            Optional<UserModel> isIdPresent = userRepository.findById(userId);
+            if (isIdPresent.isPresent()){
+                isIdPresent.get().setActive(true);
+                isIdPresent.get().setDeleted(false);
+                userRepository.save(isIdPresent.get());
+                return new Response("success", 200, isIdPresent.get());
             }
             throw new UserNotFoundException(400, "Not found");
         }

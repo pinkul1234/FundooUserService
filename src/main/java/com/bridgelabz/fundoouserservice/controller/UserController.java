@@ -25,8 +25,8 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response> updateUser(@RequestHeader String token, @RequestBody UserDto userDto, @PathVariable long id){
-        Response response = userService.updateUser(id, token, userDto);
+    public ResponseEntity<Response> updateUser(@RequestHeader String token, @RequestBody UserDto userDto, @PathVariable long userId){
+        Response response = userService.updateUser(userId, token, userDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/getuserdata")
@@ -35,8 +35,8 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deleteuser")
-    public ResponseEntity<Response> deleteUser(@PathVariable long id, @RequestHeader String token){
-        Response response = userService.deleteUser(id, token);
+    public ResponseEntity<Response> deleteUser(@PathVariable long userId, @RequestHeader String token){
+        Response response = userService.deleteUser(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PostMapping("/login")
@@ -55,18 +55,18 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deleteusers")
-    public ResponseEntity<Response> deleteUsers(@PathVariable long id, @RequestHeader String token) {
-        Response response = userService.deleteUsers(id, token);
+    public ResponseEntity<Response> deleteUsers(@PathVariable long userId, @RequestHeader String token) {
+        Response response = userService.deleteUsers(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deletepermanently")
-    public ResponseEntity<Response> deletePermanently(@PathVariable long id, @RequestHeader String token) {
-        Response response = userService.deletePermanently(id, token);
+    public ResponseEntity<Response> deletePermanently(@PathVariable long userId, @RequestHeader String token) {
+        Response response = userService.deletePermanently(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/restore")
-    public ResponseEntity<Response> restore(@PathVariable long id, @RequestHeader String token) {
-        Response response = userService.restore(id, token);
+    public ResponseEntity<Response> restore(@PathVariable long userId, @RequestHeader String token) {
+        Response response = userService.restore(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/validate/{token}")
