@@ -6,6 +6,7 @@ import com.bridgelabz.fundoouserservice.util.Response;
 import com.bridgelabz.fundoouserservice.util.ResponseToken;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IUserService {
@@ -31,4 +32,8 @@ public interface IUserService {
     Response restore(long userId, String token);
 
     Boolean validate(String token);
+
+    Response addProfilePic(long id, MultipartFile profilePic) throws IOException;
+
+    Boolean validateEmail(String emailId);
 }

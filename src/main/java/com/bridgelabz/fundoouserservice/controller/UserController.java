@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -69,8 +71,20 @@ public class UserController {
         Response response = userService.restore(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @PostMapping("/addprofilepic{id}")
+    public ResponseEntity<Response> addProfilePic(@PathVariable long id, @RequestParam(value = "File") MultipartFile profilePic) throws IOException {
+        Response response = userService.addProfilePic(id, profilePic);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @GetMapping("/validate/{token}")
     public Boolean validate(@PathVariable String token){
         return userService.validate(token);
+    }
+
+    @GetMapping("/validateemail")
+    public Boolean validateEmail(@PathVariable String emailId){
+        return userService.validateEmail(emailId);
     }
 }

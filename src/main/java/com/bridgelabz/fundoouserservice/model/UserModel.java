@@ -17,7 +17,9 @@ public class UserModel {
     private String fullName;
     private long mobile;
     private String emailId;
-    private String profilePic;
+
+    @Lob
+    private byte[] profilePic;
     private String password;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
@@ -29,7 +31,6 @@ public class UserModel {
         this.fullName = userDto.getFullName();
         this.mobile = userDto.getMobile();
         this.emailId = userDto.getEmailId();
-        this.profilePic = userDto.getProfilePic();
         this.password = userDto.getPassword();
         this.dateOfBirth = userDto.getDateOfBirth();
     }

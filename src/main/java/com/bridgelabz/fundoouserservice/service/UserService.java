@@ -9,7 +9,9 @@ import com.bridgelabz.fundoouserservice.util.ResponseToken;
 import com.bridgelabz.fundoouserservice.util.TokenUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +43,6 @@ public class UserService implements IUserService {
             isUserPresent.get().setFullName(userDto.getFullName());
             isUserPresent.get().setMobile(userDto.getMobile());
             isUserPresent.get().setEmailId(userDto.getEmailId());
-            isUserPresent.get().setProfilePic(userDto.getProfilePic());
             isUserPresent.get().setPassword(userDto.getPassword());
             isUserPresent.get().setDateOfBirth(userDto.getDateOfBirth());
             isUserPresent.get().setUpdatedDate(LocalDateTime.now());
@@ -162,6 +163,17 @@ public class UserService implements IUserService {
         }
         throw new UserNotFoundException(400, "Token is wrong");
     }
+
+    @Override
+    public Response addProfilePic(long id, MultipartFile profilePic) throws IOException {
+        Optional<UserModel> isIdPresent = userRepository.findById(id);
+        if (isIdPresent.isPresent()){
+            isIdPresent.get().setProfilePic(profilePic.getBytes());
+            return new Response("success", 200, isIdPresent.get());
+        }
+        return null;
+    }
+
     @Override
     public Boolean validate(String token){
         Long userId = tokenUtil.decodeToken(token);
@@ -170,5 +182,16 @@ public class UserService implements IUserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Boolean validateEmail(String emailId){
+        Optional<UserModel> isEmailPresent = userRepository.findByEmailId(emailId);
+        if (isEmailPresent.isPresent()){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
