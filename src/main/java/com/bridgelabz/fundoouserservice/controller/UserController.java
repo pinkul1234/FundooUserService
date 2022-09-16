@@ -4,6 +4,7 @@ import com.bridgelabz.fundoouserservice.dto.UserDto;
 import com.bridgelabz.fundoouserservice.model.UserModel;
 import com.bridgelabz.fundoouserservice.service.IUserService;
 import com.bridgelabz.fundoouserservice.util.Response;
+import com.bridgelabz.fundoouserservice.util.ResponseClass;
 import com.bridgelabz.fundoouserservice.util.ResponseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response> updateUser(@RequestHeader String token, @RequestBody UserDto userDto, @PathVariable long userId){
+    public ResponseEntity<Response> updateUser(@RequestHeader String token, @RequestBody UserDto userDto, @PathVariable Long userId){
         Response response = userService.updateUser(userId, token, userDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -37,7 +38,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deleteuser")
-    public ResponseEntity<Response> deleteUser(@PathVariable long userId, @RequestHeader String token){
+    public ResponseEntity<Response> deleteUser(@PathVariable Long userId, @RequestHeader String token){
         Response response = userService.deleteUser(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -57,22 +58,22 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deleteusers")
-    public ResponseEntity<Response> deleteUsers(@PathVariable long userId, @RequestHeader String token) {
+    public ResponseEntity<Response> deleteUsers(@PathVariable Long userId, @RequestHeader String token) {
         Response response = userService.deleteUsers(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/deletepermanently")
-    public ResponseEntity<Response> deletePermanently(@PathVariable long userId, @RequestHeader String token) {
+    public ResponseEntity<Response> deletePermanently(@PathVariable Long userId, @RequestHeader String token) {
         Response response = userService.deletePermanently(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/restore")
-    public ResponseEntity<Response> restore(@PathVariable long userId, @RequestHeader String token) {
+    public ResponseEntity<Response> restore(@PathVariable Long userId, @RequestHeader String token) {
         Response response = userService.restore(userId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PostMapping("/addprofilepic{id}")
-    public ResponseEntity<Response> addProfilePic(@PathVariable long id, @RequestParam(value = "File") MultipartFile profilePic) throws IOException {
+    public ResponseEntity<Response> addProfilePic(@PathVariable Long id, @RequestParam(value = "File") MultipartFile profilePic) throws IOException {
         Response response = userService.addProfilePic(id, profilePic);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -84,7 +85,8 @@ public class UserController {
     }
 
     @GetMapping("/validateemail")
-    public Boolean validateEmail(@PathVariable String emailId){
-        return userService.validateEmail(emailId);
+    public ResponseEntity<ResponseClass> validateEmail(@PathVariable String emailId, @RequestHeader String token){
+        ResponseClass responseClass = userService.validateEmail(emailId, token);
+        return new ResponseEntity<>(responseClass, HttpStatus.OK);
     }
 }

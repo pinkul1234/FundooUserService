@@ -5,6 +5,7 @@ import com.bridgelabz.fundoouserservice.exception.UserNotFoundException;
 import com.bridgelabz.fundoouserservice.model.UserModel;
 import com.bridgelabz.fundoouserservice.repository.UserRepository;
 import com.bridgelabz.fundoouserservice.util.Response;
+import com.bridgelabz.fundoouserservice.util.ResponseClass;
 import com.bridgelabz.fundoouserservice.util.ResponseToken;
 import com.bridgelabz.fundoouserservice.util.TokenUtil;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response updateUser(long userId, String token, UserDto userDto) {
+    public Response updateUser(Long userId, String token, UserDto userDto) {
         Long userIdToken = tokenUtil.decodeToken(token);
         Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()) {
@@ -65,7 +66,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response deleteUser(long userId, String token) {
+    public Response deleteUser(Long userId, String token) {
         Long userIdToken = tokenUtil.decodeToken(token);
         Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()) {
@@ -118,7 +119,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response deleteUsers(long userId, String token) {
+    public Response deleteUsers(Long userId, String token) {
         long userIdToken = tokenUtil.decodeToken(token);
         Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()) {
@@ -134,7 +135,7 @@ public class UserService implements IUserService {
         throw new UserNotFoundException(400, "Token is wrong");
     }
     @Override
-    public Response deletePermanently(long userId, String token){
+    public Response deletePermanently(Long userId, String token){
         long userIdToken = tokenUtil.decodeToken(token);
         Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()){
@@ -148,7 +149,7 @@ public class UserService implements IUserService {
         throw new UserNotFoundException(400, "Token is wrong");
     }
     @Override
-    public Response restore(long userId, String token){
+    public Response restore(Long userId, String token){
         long userIdToken = tokenUtil.decodeToken(token);
         Optional<UserModel> isUserPresent = userRepository.findById(userIdToken);
         if (isUserPresent.isPresent()){
@@ -165,7 +166,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Response addProfilePic(long id, MultipartFile profilePic) throws IOException {
+    public Response addProfilePic(Long id, MultipartFile profilePic) throws IOException {
         Optional<UserModel> isIdPresent = userRepository.findById(id);
         if (isIdPresent.isPresent()){
             isIdPresent.get().setProfilePic(profilePic.getBytes());
@@ -185,13 +186,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Boolean validateEmail(String emailId){
+    public ResponseClass validateEmail(String emailId, String token){
         Optional<UserModel> isEmailPresent = userRepository.findByEmailId(emailId);
         if (isEmailPresent.isPresent()){
-            return true;
+            return new ResponseClass(200, "success", isEmailPresent.get());
         }
         else {
-            return false;
+            throw new UserNotFoundException(400, "not found");
         }
     }
 }
